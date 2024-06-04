@@ -14,5 +14,9 @@ Instructions:
 ## Programmer
 To turn it into an executable use the following prompt:
 
-1. `pip install pyinstaller`
-2. `pyinstaller --windowed chartConverter-Psych.py`
+1. Make virtual ambience '.venv'
+2. `.venv\Scripts\Activate.ps1`
+3. `pip install pyinstaller`
+4. `pyinstaller --windowed script.py`
+
+Final: 'ChartConverter/dist'
