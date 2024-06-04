@@ -1,4 +1,5 @@
 import json
+import sys
 import os
 import tkinter as tk
 from tkinter import filedialog, messagebox
@@ -34,12 +35,11 @@ fileData = {
     'event_dir': ''
 }
 
-import_song_events = True
 window_position = None
 
-# Funções
+## Conversor
 def transform_notes():
-    global gameplayData, songData, fileData, import_song_events
+    global gameplayData, songData, fileData
 
     d_map = {
         0: 4, 1: 5, 2: 6, 3: 7,
@@ -107,6 +107,14 @@ def transform_notes():
             'gfVersion': player3,
             'events': events,
             'notes': sections,
+            'song': songData['songName'],
+            'stage': songData['stageName'],
+            'needsVoices': songData['needsVoices'],
+            'bpm': bpm,
+            'mania': 3,
+            'speed': scrollspeed,
+            'songInstVolume': songData['songInstVolume'],
+            'validScore': songData['validScore'],
             'bfTrails': gameplayData['bfTrails'],
             'gfTrails': gameplayData['gfTrails'],
             'characterTrails': gameplayData['characterTrails'],
@@ -114,18 +122,10 @@ def transform_notes():
             'cameraMoveOnNotes': gameplayData['cameraMoveOnNotes'],
             'healthdrain': gameplayData['healthdrain'],
             'healthdrainKill': gameplayData['healthdrainKill'],
-            'arrowSkin': '',
-            'splashSkin': 'noteSplashes',
             'disableDebugButtons': gameplayData['disableDebugButtons'],
             'disableAntiMash': gameplayData['disableAntiMash'],
-            'song': songData['songName'],
-            'speed': scrollspeed,
-            'songInstVolume': songData['songInstVolume'],
-            'needsVoices': songData['needsVoices'],
-            'mania': 3,
-            'bpm': bpm,
-            'stage': songData['stageName'],
-            'validScore': songData['validScore']
+            'arrowSkin': '',
+            'splashSkin': 'noteSplashes'
         },
         'generatedBy': 'FNF Chart Conversor - Wumpa Conversor v1.5.1'
     }
@@ -140,6 +140,7 @@ def transform_notes():
     messagebox.showinfo("Sucesso", f"Dados transformados e salvos em '{output_file}'.")
 
 
+## Eventos
 def get_events(input_file):
     final_events = []
 
@@ -158,26 +159,33 @@ def get_events(input_file):
 
         if name == 'FocusCamera':
             name = 'Focus Camera'
-            value1 = values.get('char', '')
+            tp = type(values)
+            if tp == int:
+                value1 = values
+            elif tp == dict:
+                value1 = values.get('char', '0')
+
         elif name == 'ZoomCamera':
             name = 'Set Camera Zoom'
-            value1 = values.get('zoom', '')
-            value2 = values.get('duration', '')
+            value1 = values.get('zoom', '0.7')
+            value2 = values.get('duration', '2')
+
         elif name == 'SetCameraBop':
             name = 'Change Camera Bop'
-            value1 = values.get('intensity', '')
+            value1 = values.get('intensity', '1')
+
         elif name == 'PlayAnimation':
             name = 'Play Animation'
-            value1 = values.get('anim', '')
-            value2 = values.get('target', '')
+            value1 = values.get('anim', 'hey')
+            value2 = values.get('target', 'bf')
 
         final_events.append([
             time,
             [
                 [
                     name,
-                    value1,
-                    value2
+                    str(value1),
+                    str(value2)
                 ]
             ]
         ])
@@ -201,7 +209,8 @@ def export_events():
 
     messagebox.showinfo("Sucesso", f"Arquivo de eventos exportado em '{output_file}'.")
 
-# Dados de Entrada
+
+## Dados de Entrada
 def musicBPM_exists(meta_file):
     with open(meta_file, 'r') as file:
         data = json.load(file)
@@ -256,6 +265,8 @@ def get_song_stage():
         meta = json.load(file)
     return meta['playData']['stage']
 
+
+## Redefinir variaveis
 def resetChartValues():
     songData['validScore'] = True
     songData['songName'] = ''
@@ -263,6 +274,7 @@ def resetChartValues():
     songData['needsVoices'] = True
     songData['stageName'] = ''
     songData['validScore'] = True
+
     gameplayData['bfTrails'] = False
     gameplayData['gfTrails'] = False
     gameplayData['characterTrails'] = False
@@ -272,14 +284,18 @@ def resetChartValues():
     gameplayData['healthdrainKill'] = False
     gameplayData['disableDebugButtons'] = False
     gameplayData['disableAntiMash'] = False
+
     fileData['diff_name'] = ''
     fileData['input_file'] = ''
     fileData['meta_file'] = ''
     fileData['output_dir'] = ''
     fileData['song_strumtime'] = 0
 
+
+## Caminhos
 def verifyFilePaths():
-    base_dir = os.path.dirname(__file__)
+    ##base_dir = os.path.dirname(__file__)
+    base_dir = get_executable_dir()
     input_dir = os.path.join(base_dir, 'charts_input')
     meta_dir = os.path.join(base_dir, 'charts_meta')
     output_dir = os.path.join(base_dir, 'charts_output')
@@ -294,6 +310,12 @@ def verifyFilePaths():
         os.makedirs(event_dir)
     fileData['output_dir'] = output_dir
     fileData['event_dir'] = event_dir
+
+def get_executable_dir():
+    if getattr(sys, 'frozen', False):
+        return os.path.dirname(sys.executable)
+    else:
+        return os.path.dirname(os.path.abspath(__file__))
 
 # Funções do menu principal
 def select_input_file():
@@ -327,7 +349,7 @@ def cancel_menu():
     funkinWindow.destroy()
 
 
-# Processo
+# Processos
 # 1
 def first_process():
     global window_position
@@ -629,6 +651,7 @@ def open_music_window():
     musicDataWindow.protocol("WM_DELETE_WINDOW", return_to_main)
 
 
+## Processos finais
 def finalize_process():
     musicAssetsWindow.destroy()
     musicDataWindow.destroy()

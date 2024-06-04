@@ -27,7 +27,7 @@ fileData = {
 
 window_position = None
 
-# Funções
+## Conversor
 def transform_notes():
     global songData, fileData
 
@@ -119,6 +119,7 @@ def transform_notes():
     messagebox.showinfo("Sucesso", f"Dados transformados e salvos em '{output_file}'.")
 
 
+## Eventos
 def get_events(input_file):
     final_events = []
 
@@ -137,26 +138,33 @@ def get_events(input_file):
 
         if name == 'FocusCamera':
             name = 'Focus Camera'
-            value1 = values.get('char', '')
+            tp = type(values)
+            if tp == int:
+                value1 = values
+            elif tp == dict:
+                value1 = values.get('char', '0')
+
         elif name == 'ZoomCamera':
             name = 'Set Camera Zoom'
-            value1 = values.get('zoom', '')
-            value2 = values.get('duration', '')
+            value1 = values.get('zoom', '0.7')
+            value2 = values.get('duration', '2')
+
         elif name == 'SetCameraBop':
             name = 'Change Camera Bop'
-            value1 = values.get('intensity', '')
+            value1 = values.get('intensity', '1')
+
         elif name == 'PlayAnimation':
             name = 'Play Animation'
-            value1 = values.get('anim', '')
-            value2 = values.get('target', '')
+            value1 = values.get('anim', 'hey')
+            value2 = values.get('target', 'bf')
 
         final_events.append([
             time,
             [
                 [
                     name,
-                    value1,
-                    value2
+                    str(value1),
+                    str(value2)
                 ]
             ]
         ])
@@ -180,7 +188,8 @@ def export_events():
 
     messagebox.showinfo("Sucesso", f"Arquivo de eventos exportado em '{output_file}'.")
 
-# Dados de Entrada
+
+## Dados de Entrada
 def musicBPM_exists(meta_file):
     with open(meta_file, 'r') as file:
         data = json.load(file)
@@ -235,6 +244,8 @@ def get_song_stage():
         meta = json.load(file)
     return meta['playData']['stage']
 
+
+## Redefinir variaveis
 def resetChartValues():
     songData['songName'] = ''
     songData['stageName'] = ''
@@ -251,6 +262,8 @@ def resetChartValues():
     fileData['output_dir'] = ''
     fileData['song_strumtime'] = 0
  
+
+## Caminhos
 def verifyFilePaths():
     #base_dir = os.path.dirname(__file__)
     base_dir = get_executable_dir()
@@ -277,7 +290,8 @@ def get_executable_dir():
     else:
         return os.path.dirname(os.path.abspath(__file__))
 
-# Funções do menu principal
+
+## Funções do menu principal
 def select_input_file():
     base_dir = get_executable_dir()
     input_dir = os.path.join(base_dir, 'charts_input')
@@ -300,7 +314,7 @@ def cancel_menu():
     funkinWindow.destroy()
 
 
-# Processo
+# Processos
 # 1
 def first_process():
     global window_position
@@ -519,6 +533,7 @@ def open_music_window():
     musicDataWindow.protocol("WM_DELETE_WINDOW", return_to_main)
 
 
+## Processos finais
 def finalize_process():
     musicAssetsWindow.destroy()
     musicDataWindow.destroy()
