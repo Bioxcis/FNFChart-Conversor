@@ -106,7 +106,7 @@ def transform_notes():
             'arrowSkin': '',
             'splashSkin': 'noteSplashes',
         },
-        'generatedBy': 'FNF Chart Conversor - Psych Conversor v0.7.3'
+        'generatedBy': 'FNF Chart Conversor - Psych Converter v0.7.3'
     }
 
     output_file = os.path.join(fileData['output_dir'], f"{songData['songName']}-{fileData['diff_name']}.json")
@@ -116,7 +116,7 @@ def transform_notes():
     with open(output_file, 'w') as file:
         json.dump(output_data, file, indent = 4)
 
-    messagebox.showinfo("Sucesso", f"Dados transformados e salvos em '{output_file}'.")
+    messagebox.showinfo("Success", f"Data transformed and saved in '{output_file}'.")
 
 
 ## Eventos
@@ -185,6 +185,7 @@ def get_events(input_file):
         #             ]
         #         ]
         #     ])
+
     return final_events
 
 def export_events():
@@ -203,7 +204,7 @@ def export_events():
     with open(output_file, 'w') as file:
         json.dump(output_data, file, indent = 4)
 
-    messagebox.showinfo("Sucesso", f"Arquivo de eventos exportado em '{output_file}'.")
+    messagebox.showinfo("Success", f"Event file exported to '{output_file}'.")
 
 
 ## Dados de Entrada
@@ -314,7 +315,7 @@ def select_input_file():
     input_dir = os.path.join(base_dir, 'charts_input')
     if not os.path.exists(input_dir):
         os.makedirs(input_dir)
-    file_path = filedialog.askopenfilename(initialdir=input_dir, title="Selecionar arquivo de entrada", filetypes=[("JSON files", "*.json")])
+    file_path = filedialog.askopenfilename(initialdir=input_dir, title="Select input file", filetypes=[("JSON files", "*.json")])
     input_entry.delete(0, tk.END)
     input_entry.insert(0, file_path)
 
@@ -323,7 +324,7 @@ def select_meta_file():
     meta_dir = os.path.join(base_dir, 'charts_meta')
     if not os.path.exists(meta_dir):
         os.makedirs(meta_dir)
-    file_path = filedialog.askopenfilename(initialdir=meta_dir, title="Selecionar arquivo de meta", filetypes=[("JSON files", "*.json")])
+    file_path = filedialog.askopenfilename(initialdir=meta_dir, title="Select meta file", filetypes=[("JSON files", "*.json")])
     meta_entry.delete(0, tk.END)
     meta_entry.insert(0, file_path)
 
@@ -340,26 +341,26 @@ def first_process():
     diff = diff_entry.get()
 
     if not input or not meta or not diff:
-        messagebox.showerror("Erro", "Há campos não preenchidos!")
+        messagebox.showerror("Error", "There are fields not filled in!")
         return
 
     if not os.path.exists(input):
-        messagebox.showerror("Erro", f"Arquivo '{input}' não existe!")
+        messagebox.showerror("Error", f"File '{input}' not exists!")
         return
 
     if not os.path.exists(meta):
-        messagebox.showerror("Erro", f"Arquivo '{meta}' não existe!")
+        messagebox.showerror("Error", f"File '{meta}' not exists!")
         return
 
     if not musicBPM_exists(meta):
-        messagebox.showerror("Erro", "Problema ao obter o BPM dos dados!")
+        messagebox.showerror("Error", "Problem getting BPM from data!")
         return
 
     bpm_value = get_musicBPM(meta)
     song_strumtime = getStrumTime(bpm_value)
 
     if not difficultyExists(input, diff):
-        messagebox.showerror("Erro", f"Problema ao obter os dados da dificuldade {diff}!")
+        messagebox.showerror("Error", f"Problem getting difficulty data {diff}!")
         return
 
     fileData['input_file'] = input
@@ -378,7 +379,7 @@ def second_process(voices):
     stage_name = stage_entry.get()
 
     if not song_name or not stage_name:
-        messagebox.showerror("Erro", "Há campos não preenchidos!")
+        messagebox.showerror("Error", "There are fields not filled in!")
         return
 
     songData['songName'] = song_name
@@ -412,10 +413,10 @@ def finish_process(events):
 def event_process():
     input = input_entry.get()
     if not input:
-        messagebox.showerror("Erro", "Há campos não preenchidos!")
+        messagebox.showerror("Error", "There are fields not filled in!")
         return
     if not os.path.exists(input):
-        messagebox.showerror("Erro", f"Arquivo '{input}' não existe!")
+        messagebox.showerror("Error", f"File '{input}' not exists!")
         return
     fileData['input_file'] = input
     export_events()
@@ -432,24 +433,24 @@ def open_main_window():
     funkinWindow.resizable(width=False, height=False)
     funkinWindow.geometry("585x170")
 
-    tk.Label(funkinWindow, text="Arquivo de Entrada:").grid(row=0, column=0, padx=10, sticky=tk.W)
-    input_entry = tk.Entry(funkinWindow, width=50)
+    tk.Label(funkinWindow, text="Chart File:").grid(row=0, column=0, padx=10, sticky=tk.W)
+    input_entry = tk.Entry(funkinWindow, width=57)
     input_entry.grid(row=0, column=1, padx=5, pady=5)
-    tk.Button(funkinWindow, text="Buscar", command=select_input_file).grid(row=0, column=2, padx=5, pady=5)
+    tk.Button(funkinWindow, text="Search", command=select_input_file).grid(row=0, column=2, padx=5, pady=5)
 
-    tk.Label(funkinWindow, text="Arquivo de Metadados:").grid(row=1, column=0, padx=10, sticky=tk.W)
-    meta_entry = tk.Entry(funkinWindow, width=50)
+    tk.Label(funkinWindow, text="Metadata File:").grid(row=1, column=0, padx=10, sticky=tk.W)
+    meta_entry = tk.Entry(funkinWindow, width=57)
     meta_entry.grid(row=1, column=1, padx=5, pady=5)
-    tk.Button(funkinWindow, text="Buscar", command=select_meta_file).grid(row=1, column=2, padx=5, pady=5)
+    tk.Button(funkinWindow, text="Search", command=select_meta_file).grid(row=1, column=2, padx=5, pady=5)
 
-    tk.Label(funkinWindow, text="Dificuldade:").grid(row=2, column=0, padx=10, pady=20, sticky=tk.W)
+    tk.Label(funkinWindow, text="Difficult:").grid(row=2, column=0, padx=10, pady=20, sticky=tk.W)
     diff_entry = tk.Entry(funkinWindow, width=30)
     diff_entry.grid(row=2, column=1, padx=5, pady=5, sticky=tk.W)
     diff_entry.insert(0, 'normal')
 
-    tk.Button(funkinWindow, text="Exportar Eventos", command=event_process).grid(row=3, column=0, padx=10, sticky=tk.W)
-    tk.Button(funkinWindow, text="Converter Chart", command=first_process).grid(row=3, column=1, padx=40, sticky=tk.W)
-    tk.Button(funkinWindow, text="Sair", width=6, command=cancel_menu).grid(row=3, column=2, sticky=tk.W)
+    tk.Button(funkinWindow, text="Export Events", command=event_process).grid(row=3, column=0, padx=10, sticky=tk.W)
+    tk.Button(funkinWindow, text="Convert Chart", command=first_process).grid(row=3, column=1, padx=40, sticky=tk.W)
+    tk.Button(funkinWindow, text="Exit", width=6, command=cancel_menu).grid(row=3, column=2, sticky=tk.W)
 
 # 2
 def open_music_window():
@@ -478,27 +479,27 @@ def open_music_window():
 
         musicDataWindow.withdraw()
         musicAssetsWindow = tk.Toplevel()
-        musicAssetsWindow.title("Friday Night Funkin Converter - Configurações")
+        musicAssetsWindow.title("Friday Night Funkin Converter - Assets")
         musicAssetsWindow.geometry(f"+{window_position[0]}+{window_position[1]}")
         musicAssetsWindow.resizable(width=False, height=False)
         musicAssetsWindow.geometry("460x255")
 
-        tk.Label(musicAssetsWindow, text="Dados Game Over:").grid(row=0, column=0, padx=10, sticky=tk.W)
-        tk.Label(musicAssetsWindow, text="(Permite campos vazios)").grid(row=0, column=1, sticky=tk.W)
+        tk.Label(musicAssetsWindow, text="Game Over Data:").grid(row=0, column=0, padx=10, sticky=tk.W)
+        tk.Label(musicAssetsWindow, text="(Allow empty fields)").grid(row=0, column=1, sticky=tk.W)
 
-        tk.Label(musicAssetsWindow, text="Música em Loop:").grid(row=1, column=0, padx=10, sticky=tk.W)
+        tk.Label(musicAssetsWindow, text="Loop Music:").grid(row=1, column=0, padx=10, sticky=tk.W)
         loop_entry = tk.Entry(musicAssetsWindow, width=40)
         loop_entry.grid(row=1, column=1, padx=5, pady=5)
 
-        tk.Label(musicAssetsWindow, text="Música Final:").grid(row=2, column=0, padx=10, sticky=tk.W)
+        tk.Label(musicAssetsWindow, text="End Music:").grid(row=2, column=0, padx=10, sticky=tk.W)
         end_entry = tk.Entry(musicAssetsWindow, width=40)
         end_entry.grid(row=2, column=1, padx=5, pady=5)
 
-        tk.Label(musicAssetsWindow, text="Personagem:").grid(row=3, column=0, padx=10, sticky=tk.W)
+        tk.Label(musicAssetsWindow, text="Character:").grid(row=3, column=0, padx=10, sticky=tk.W)
         char_entry = tk.Entry(musicAssetsWindow, width=40)
         char_entry.grid(row=3, column=1, padx=5, pady=5)
 
-        tk.Label(musicAssetsWindow, text="Som de Morte:").grid(row=4, column=0, padx=10, sticky=tk.W)
+        tk.Label(musicAssetsWindow, text="Sound Death:").grid(row=4, column=0, padx=10, sticky=tk.W)
         sound_entry = tk.Entry(musicAssetsWindow, width=40)
         sound_entry.grid(row=4, column=1, padx=5, pady=5)
 
@@ -507,12 +508,12 @@ def open_music_window():
         
         import_events = tk.BooleanVar()
         import_events.set(True)
-        tk.Label(musicAssetsWindow, text="Importar Eventos?").grid(row=6, column=0, padx=10, sticky=tk.W)
-        tk.Radiobutton(musicAssetsWindow, text="Sim", variable=import_events, value=True).grid(row=6, column=1, padx=10, sticky=tk.W)
-        tk.Radiobutton(musicAssetsWindow, text="Não", variable=import_events, value=False).grid(row=7, column=1, padx=10, sticky=tk.W)
+        tk.Label(musicAssetsWindow, text="Import Events?").grid(row=6, column=0, padx=10, sticky=tk.W)
+        tk.Radiobutton(musicAssetsWindow, text="Yes", variable=import_events, value=True).grid(row=6, column=1, padx=10, sticky=tk.W)
+        tk.Radiobutton(musicAssetsWindow, text="No", variable=import_events, value=False).grid(row=7, column=1, padx=10, sticky=tk.W)
 
-        tk.Button(musicAssetsWindow, text="Voltar", command=return_to_second).grid(row=8, column=0, padx=20, pady=15, sticky=tk.W)
-        tk.Button(musicAssetsWindow, text="Finalizar Conversão", command=to_finish_progress).grid(row=8, column=1, pady=15, sticky=tk.W)
+        tk.Button(musicAssetsWindow, text="Back", command=return_to_second).grid(row=8, column=0, padx=20, pady=15, sticky=tk.W)
+        tk.Button(musicAssetsWindow, text="Finish Conversion", command=to_finish_progress).grid(row=8, column=1, pady=15, sticky=tk.W)
 
         musicAssetsWindow.protocol("WM_DELETE_WINDOW", return_to_second)
 
@@ -521,18 +522,18 @@ def open_music_window():
 
     funkinWindow.withdraw()
     musicDataWindow = tk.Toplevel()
-    musicDataWindow.title("Friday Night Chart Converter - Dados da Música")
+    musicDataWindow.title("Friday Night Chart Converter - Song Data")
     musicDataWindow.geometry(f"+{window_position[0]}+{window_position[1]}")
     musicDataWindow.resizable(width=False, height=False)
     musicDataWindow.geometry("470x170")
 
-    tk.Label(musicDataWindow, text="Nome da Música:").grid(row=0, column=0, padx=10, sticky=tk.W)
+    tk.Label(musicDataWindow, text="Song Name:").grid(row=0, column=0, padx=10, sticky=tk.W)
     name_entry = tk.Entry(musicDataWindow, width=40)
     name_entry.grid(row=0, column=1, padx=5, pady=5)
     name = get_song_name()
     name_entry.insert(0, name)
 
-    tk.Label(musicDataWindow, text="Nome do Estágio:").grid(row=1, column=0, padx=10, sticky=tk.W)
+    tk.Label(musicDataWindow, text="Stage Name:").grid(row=1, column=0, padx=10, sticky=tk.W)
     stage_entry = tk.Entry(musicDataWindow, width=40)
     stage_entry.grid(row=1, column=1, padx=5, pady=5)
     stage = get_song_stage()
@@ -540,12 +541,12 @@ def open_music_window():
 
     needs_voices = tk.BooleanVar()
     needs_voices.set(True)
-    tk.Label(musicDataWindow, text="Precisa de Vozes?").grid(row=2, column=0, padx=10, sticky=tk.W)
-    tk.Radiobutton(musicDataWindow, text="Sim", variable=needs_voices, value=True).grid(row=2, column=1, padx=10, sticky=tk.W)
-    tk.Radiobutton(musicDataWindow, text="Não", variable=needs_voices, value=False).grid(row=3, column=1, padx=10, sticky=tk.W)
+    tk.Label(musicDataWindow, text="Needs Voices?").grid(row=2, column=0, padx=10, sticky=tk.W)
+    tk.Radiobutton(musicDataWindow, text="Yes", variable=needs_voices, value=True).grid(row=2, column=1, padx=10, sticky=tk.W)
+    tk.Radiobutton(musicDataWindow, text="No", variable=needs_voices, value=False).grid(row=3, column=1, padx=10, sticky=tk.W)
 
-    tk.Button(musicDataWindow, text="Voltar", command=return_to_main).grid(row=7, column=0, padx=20, pady=20, sticky=tk.W)
-    tk.Button(musicDataWindow, text="Salvar Informações", command=to_third_page).grid(row=7, column=1, padx=30, pady=20, sticky=tk.W)
+    tk.Button(musicDataWindow, text="Back", command=return_to_main).grid(row=7, column=0, padx=20, pady=20, sticky=tk.W)
+    tk.Button(musicDataWindow, text="Save Data", command=to_third_page).grid(row=7, column=1, padx=30, pady=20, sticky=tk.W)
 
     musicDataWindow.protocol("WM_DELETE_WINDOW", return_to_main)
 
