@@ -168,6 +168,23 @@ def get_events(input_file):
                 ]
             ]
         ])
+
+        # if name == 'PlayAnimation':
+        #     name = 'Play Animation'
+        #     value1 = values.get('anim', 'hey')
+        #     value2 = values.get('target', 'bf')
+
+        # if name != 'FocusCamera' and name != 'SetCameraBop' and name != 'ZoomCamera':
+        #     final_events.append([
+        #         time,
+        #         [
+        #             [
+        #                 name,
+        #                 str(value1),
+        #                 str(value2)
+        #             ]
+        #         ]
+        #     ])
     return final_events
 
 def export_events():
