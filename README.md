@@ -11,6 +11,12 @@ Instructions:
 
 (Avoid having global and specific events in the music folder at the same time to avoid problems, bugs or unwanted actions).
 
+As it is a program made in Python, it can trigger a virus alert from your `Anti-Virus` and if it occurs, allow this file, it is reliable.
+
+In the future I intend to fix this and other possible problems, in addition to updating if necessary.
+
+If you want to help or have a better solution for this, feel free to contribute.
+
 ## Programmer
 To turn it into an executable use the following prompt:
 
@@ -20,3 +26,7 @@ To turn it into an executable use the following prompt:
 4. `pyinstaller --windowed script.py`
 
 Final: 'ChartConverter/dist'
+
+### .
+
+Made as a hobby and learning from fan to fan.
