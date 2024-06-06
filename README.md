@@ -8,23 +8,30 @@ Instructions:
 3. The exported data goes to 'output_file' with the song name + difficulty name.
 4. For the song, you will have an option to add events to the chart itself to perform on that specific difficulty of the song.
 5. The exported events go to 'events_file' with the name 'event' to be executed globally for all song difficulties.
-
-(Avoid having global and specific events in the music folder at the same time to avoid problems, bugs or unwanted actions).
-
-As it is a program made in Python, it can trigger a virus alert from your `Anti-Virus` and if it occurs, allow this file, it is reliable.
+* (Avoid having global and specific events in the music folder at the same time to avoid problems, bugs or unwanted actions).
 
 In the future I intend to fix this and other possible problems, in addition to updating if necessary.
 
 If you want to help or have a better solution for this, feel free to contribute.
 
-## Programmer
-To turn it into an executable use the following prompt:
 
-1. `pip install pyinstaller`
-2. `pyinstaller --windowed script.py`
 
-Final: 'ChartConverter/dist'
+## Programmers
 
-### .
+You must have Python installed on your machine. Check with: `python --version`;
 
-Made as a hobby and learning from fan to fan.
+For a virtual environment:
+1. Create: `python -m venv venv`;
+2. Use: Windows - `.\venv\Scripts\activate` MacOS/Linux - `source venv/bin/activate`;
+
+Dependences:
+1. Upgrade pip: `python -m pip install --upgrade pip`;
+2. Nuitka: `python -m pip install nuitka`;
+3. Compile: `nuitka --standalone --disable-console --enable-plugin=tk-inter --windows-icon-from-ico=chart.ico --include-data-file=chart.ico=chart.ico --include-data-dir=charts_input=charts_input --include-data-dir=charts_meta=charts_meta chartConverter-Psych.py`;
+4. To change the external app icon using `.png` use: `python -m pip install imageio`;
+5. If you prefer to install the dependencies globally, remove `python -m` from items 1, 2 and 4;
+
+Final result: a folder with the final name `.dist`.
+
+### ------------------------------------------------------------
+# Made as a hobby and learning.
