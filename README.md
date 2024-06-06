@@ -34,5 +34,5 @@ Final result: a folder with the final name `.dist`.
 
 OPERATING SYSTEM: WINDOWS 10
 
-### ------------------------------------------------------------
-# Made as a hobby and learning.
+#
+### Made as a hobby and learning.
