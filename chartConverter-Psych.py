@@ -47,11 +47,15 @@ def transform_notes():
             songData[key] = value.get()
     
     notes = data.get('notes', {}).get(fileData['diff_name'], [])
-    scrollspeed = data['scrollSpeed'][fileData['diff_name']]
     player1 = meta['playData']['characters']['player']
     player2 = meta['playData']['characters']['opponent']
     player3 = meta['playData']['characters']['girlfriend']
     bpm = meta['timeChanges'][0]['bpm']
+
+    scrollspeed = get_scrollspeed(data)
+    if scrollspeed == None:
+        messagebox.showerror("Error", "Problem getting ScrollSpeed from data!")
+        return
 
     events = []
     sections = []
@@ -136,55 +140,39 @@ def get_events(input_file):
         name = event['e']
         values = event['v']
 
-        if name == 'FocusCamera':
-            name = 'Focus Camera'
-            tp = type(values)
-            if tp == int:
-                value1 = values
-            elif tp == dict:
-                value1 = values.get('char', '0')
+        # if name == 'FocusCamera':
+        #     name = 'Focus Camera'
+        #     tp = type(values)
+        #     if tp == int:
+        #         value1 = values
+        #     elif tp == dict:
+        #         value1 = values.get('char', '0')
 
-        elif name == 'ZoomCamera':
-            name = 'Set Camera Zoom'
-            value1 = values.get('zoom', '0.7')
-            value2 = values.get('duration', '2')
+        # elif name == 'ZoomCamera':
+        #     name = 'Set Camera Zoom'
+        #     value1 = values.get('zoom', '0.7')
+        #     value2 = values.get('duration', '2')
 
-        elif name == 'SetCameraBop':
-            name = 'Change Camera Bop'
-            value1 = values.get('intensity', '1')
+        # elif name == 'SetCameraBop':
+        #     name = 'Change Camera Bop'
+        #     value1 = values.get('intensity', '1')
 
-        elif name == 'PlayAnimation':
+        if name == 'PlayAnimation':
             name = 'Play Animation'
             value1 = values.get('anim', 'hey')
             value2 = values.get('target', 'bf')
 
-        final_events.append([
-            time,
-            [
+        if name != 'FocusCamera' or name != 'FocusCamera' or name != 'FocusCamera':
+            final_events.append([
+                time,
                 [
-                    name,
-                    str(value1),
-                    str(value2)
+                    [
+                        name,
+                        str(value1),
+                        str(value2)
+                    ]
                 ]
-            ]
-        ])
-
-        # if name == 'PlayAnimation':
-        #     name = 'Play Animation'
-        #     value1 = values.get('anim', 'hey')
-        #     value2 = values.get('target', 'bf')
-
-        # if name != 'FocusCamera' and name != 'SetCameraBop' and name != 'ZoomCamera':
-        #     final_events.append([
-        #         time,
-        #         [
-        #             [
-        #                 name,
-        #                 str(value1),
-        #                 str(value2)
-        #             ]
-        #         ]
-        #     ])
+            ])
 
     return final_events
 
@@ -252,6 +240,19 @@ def getStrumTime(bpm):
     timePerSection = 4 * timePerBeat
     return timePerSection
 
+def get_scrollspeed(data):
+    if not data or 'scrollSpeed' not in data:
+        return None
+
+    scroll_speeds = data['scrollSpeed']
+
+    if fileData['diff_name'] in scroll_speeds:
+        return scroll_speeds[fileData['diff_name']]
+    elif 'default' in scroll_speeds:
+        return scroll_speeds['default']
+    else:
+        return None
+
 def get_song_name():
     with open(fileData['meta_file'], 'r') as file:
         meta = json.load(file)
@@ -277,7 +278,6 @@ def resetChartValues():
     fileData['diff_name'] = ''
     fileData['input_file'] = ''
     fileData['meta_file'] = ''
-    fileData['output_dir'] = ''
     fileData['song_strumtime'] = 0
  
 
@@ -420,6 +420,8 @@ def event_process():
         return
     fileData['input_file'] = input
     export_events()
+    resetChartValues()
+    reset_fields()
 
 # Interfaces
 # 1
@@ -430,6 +432,7 @@ def open_main_window():
 
     funkinWindow = tk.Tk()
     funkinWindow.title("Friday Night Chart Converter - Psych Engine")
+    funkinWindow.iconbitmap(os.path.join(get_executable_dir(), 'chart.ico'))
     funkinWindow.resizable(width=False, height=False)
     funkinWindow.geometry("585x170")
 
@@ -480,6 +483,7 @@ def open_music_window():
         musicDataWindow.withdraw()
         musicAssetsWindow = tk.Toplevel()
         musicAssetsWindow.title("Friday Night Funkin Converter - Assets")
+        musicAssetsWindow.iconbitmap(os.path.join(get_executable_dir(), 'chart.ico'))
         musicAssetsWindow.geometry(f"+{window_position[0]}+{window_position[1]}")
         musicAssetsWindow.resizable(width=False, height=False)
         musicAssetsWindow.geometry("460x255")
@@ -523,6 +527,7 @@ def open_music_window():
     funkinWindow.withdraw()
     musicDataWindow = tk.Toplevel()
     musicDataWindow.title("Friday Night Chart Converter - Song Data")
+    musicDataWindow.iconbitmap(os.path.join(get_executable_dir(), 'chart.ico'))
     musicDataWindow.geometry(f"+{window_position[0]}+{window_position[1]}")
     musicDataWindow.resizable(width=False, height=False)
     musicDataWindow.geometry("470x170")
