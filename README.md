@@ -15,14 +15,13 @@ In the future I intend to fix this and other possible problems, in addition to u
 If you want to help or have a better solution for this, feel free to contribute.
 
 
-
 ## Programmers
 
 You must have Python installed on your machine. Check with: `python --version`;
 
 For a virtual environment:
 1. Create: `python -m venv venv`;
-2. Use: Windows - `.\venv\Scripts\activate` MacOS/Linux - `source venv/bin/activate`;
+2. Use: `.\venv\Scripts\activate`;
 
 Dependences:
 1. Upgrade pip: `python -m pip install --upgrade pip`;
@@ -32,6 +31,8 @@ Dependences:
 5. If you prefer to install the dependencies globally, remove `python -m` from items 1, 2 and 4;
 
 Final result: a folder with the final name `.dist`.
+
+OPERATING SYSTEM: WINDOWS 10
 
 ### ------------------------------------------------------------
 # Made as a hobby and learning.
