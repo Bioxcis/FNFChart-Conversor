@@ -32,7 +32,7 @@ Dependences:
 
 Final result: a folder with the final name `.dist`.
 
-OPERATING SYSTEM: WINDOWS 10
-
+#
+Operating System used: Windows
 #
 ### Made as a hobby and learning.
