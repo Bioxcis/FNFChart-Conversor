@@ -20,10 +20,8 @@ If you want to help or have a better solution for this, feel free to contribute.
 ## Programmer
 To turn it into an executable use the following prompt:
 
-1. Make virtual ambience '.venv'
-2. `.venv\Scripts\Activate.ps1`
-3. `pip install pyinstaller`
-4. `pyinstaller --windowed script.py`
+1. `pip install pyinstaller`
+2. `pyinstaller --windowed script.py`
 
 Final: 'ChartConverter/dist'
 
